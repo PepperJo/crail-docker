@@ -21,7 +21,7 @@ RUN echo "Crail-$GIT_COMMIT install rdma libraries and autotools" && \
     autoconf autotools-dev automake libtool make g++ \
     librdmacm-dev libibverbs-dev ibverbs-providers
 
-RUN echo "Crail-$GIT_COMMIT clone and build disni native library"
+RUN echo "Crail-$GIT_COMMIT clone and build disni native library" && \
     cd && git clone https://github.com/zrlio/disni.git && \
     cd ~/disni/libdisni && \
     ./autoprepare.sh && \
