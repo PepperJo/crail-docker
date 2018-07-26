@@ -18,8 +18,9 @@ MAINTAINER Apache Crail <dev@crail.apache.org>
 
 # TODO: automate update version on new release
 ARG GIT_COMMIT="master"
+ENV LOG_COMMIT=$GIT_COMMIT
 
-RUN echo "Crail-$GIT_COMMIT install openjdk8, git and envsubst" && \
+RUN echo "Crail-$LOG_COMMIT install openjdk8, git and envsubst" && \
     apt-get update && apt-get install --no-install-recommends -y \
     openjdk-8-jdk-headless \
     git \
@@ -28,11 +29,11 @@ ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH=${PATH}:${JAVA_HOME}/bin
 
 # We need to install maven separately since it otherwise pulls in java 10
-RUN echo "Crail-$GIT_COMMIT install maven" && \
+RUN echo "Crail-$LOG_COMMIT install maven" && \
     apt-get install --no-install-recommends -y maven
 
 
-RUN echo "Crail-$GIT_COMMIT clone & build Crail repo" && \
+RUN echo "Crail-$LOG_COMMIT clone & build Crail repo" && \
     git clone https://github.com/apache/incubator-crail.git && \
     cd incubator-crail && \
     git checkout ${GIT_COMMIT} && \
@@ -40,7 +41,7 @@ RUN echo "Crail-$GIT_COMMIT clone & build Crail repo" && \
 ENV CRAIL_HOME /incubator-crail/assembly/target/crail-1.0-bin
 ENV PATH=${PATH}:${CRAIL_HOME}/bin
 
-RUN echo "Crail-$GIT_COMMIT update crail script to update core-site.xml" && \
+RUN echo "Crail-$LOG_COMMIT update crail script to update core-site.xml" && \
     sed -i '$ienvsubst < $CRAIL_HOME/conf/core-site.xml > $CRAIL_HOME/conf/core-site.xml' $CRAIL_HOME/bin/crail
 
 ENV NAMENODE_HOST=localhost
